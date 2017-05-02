@@ -1,11 +1,9 @@
-// We declare the units outside of the function so that when the function starts (as the start button is tied to this function) it doesn't reset the units back to zero.
-
-var milliseconds = 0, seconds = 0, minutes = 0, hours = 0, t;
 
 function stopWatch(element) {
 	
 		var hrs, mins, secs, msecs;
 		var start, stop, clear
+		var milliseconds = 0, seconds = 0, minutes = 0, hours = 0, t;
 
 		hrs = element.querySelector(".clock_hours");
 		mins = element.querySelector(".clock_minutes");
@@ -94,15 +92,32 @@ function stopWatch(element) {
 			t = setTimeout(add, 10);
 		}
 	
-		start.onclick = add;
+		start.disabled = true;
+		stop.disabled = false;
+		clear.disabled = false;
 	
+		start.onclick = function() {
+			add();
+			start.disabled = true;
+			stop.disabled = false;
+			clear.disabled = false;
+		} 
+					
 		/* Stop button */
-  		stop.onclick = function() { clearTimeout(t); }
+		stop.onclick = function() { 
+			clearTimeout(t); 
+			start.disabled = false;
+			stop.disabled = true;
+		}
 		
 		/* Clear button */
 	  	clear.onclick = function() {
 			hrs.textContentL = "00"; mins.textContent = "00"; secs.textContent = "00"; msecs.textContent = "00";
 			clearTimeout(t);
-			milliseconds = 0; seconds = 0; minutes = 0; hours = 0; 
-	  	}	
+			milliseconds = 0; seconds = 0; minutes = 0; hours = 0;
+			start.disabled = false;
+			clear.disabled = true;
+			stop.disabled = true;
+	  	}
+	
 }
